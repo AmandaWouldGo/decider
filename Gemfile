@@ -17,6 +17,7 @@ gem 'shotgun'
 
 gem 'httparty'
 gem 'awesome_print'
+gem 'twilio-ruby', '~> 4.11.1'
 
 group :test do
   gem 'shoulda-matchers'

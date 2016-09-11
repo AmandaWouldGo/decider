@@ -46,10 +46,10 @@ require 'awesome_print'
 
 # end
 
-trial_params = {location: "-33.8670,151.1957", radius: "500", types: "food", opennow: true, key: ENV['GOOGLE_PLACES_API_KEY']}
-trial = GooglePlaces.new(trial_params)
-results = trial.nearby
+# trial_params = {location: "-33.8670,151.1957", radius: "500", types: "food", opennow: true, key: ENV['GOOGLE_PLACES_API_KEY']}
+# trial = GooglePlaces.new(trial_params)
+# results = trial.nearby
 
-ap parse_nearby(results)
+# ap parse_nearby(results)
 
 
