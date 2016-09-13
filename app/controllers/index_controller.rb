@@ -45,12 +45,12 @@ post '/inbound' do
           key: ENV['GOOGLE_PLACES_API_KEY']
         }
 
-        ap search = GooglePlaces.new(search_params)
-        ap search_to_parse = search.nearby
-        ap results = parse_nearby(search_to_parse)
-        ap result = sample_place(results)
+        search = GooglePlaces.new(search_params)
+        search_to_parse = search.nearby
+        results = parse_nearby(search_to_parse)
+        result = sample_place(results)
 
-        ap detail_search = parse_details(search.details(result["place_id"]))
+        detail_search = parse_details(search.details(result["place_id"]))
         if detail_search[:success]
           response_text = "Go here: #{detail_search[:name]} #{detail_search[:url]}"
         else
@@ -70,7 +70,7 @@ post '/inbound' do
   else
     user = User.create(phone_number: incoming[:sender])
     convo = WatsonConversations.new()
-    ap response = convo.start_convo(incoming[:message])
+    response = convo.start_convo(incoming[:message])
 
     user.update(last_context: response["context"])
       
