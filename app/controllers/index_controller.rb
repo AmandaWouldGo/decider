@@ -40,7 +40,7 @@ post '/inbound' do
         search_params = {
           location: locations[location_requested],
           radius: "500",
-          types: "restaurant",
+          query: "restaurant",
           opennow: true,
           key: ENV['GOOGLE_PLACES_API_KEY']
         }
@@ -50,12 +50,19 @@ post '/inbound' do
         ap results = parse_nearby(search_to_parse)
         ap result = sample_place(results)
 
-      else
+        ap detail_search = parse_details(search.details(result["place_id"]))
+        if detail_search[:success]
+          response_text = "Go here: #{detail_search[:name]} #{detail_search[:url]}"
+        else
+          result = sample_place(results)
+          ap detail_search = parse_details(search.details(result["place_id"]))
+          response_text = "Go here: #{detail_search[:name]} #{detail_search[:url]}"
+        end
 
       end
 
       message_back = Twilio::TwiML::Response.new do |r|
-        r.Message "#{response_text}"
+        r.Message response_text
       end
 
       message_back.to_xml
