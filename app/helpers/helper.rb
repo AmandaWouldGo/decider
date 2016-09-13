@@ -20,7 +20,7 @@ helpers do
     end
 
     def details(place_id)
-      detail_options = { query: {place_id: place_id, key: GOOGLE_PLACES_API_KEY} }
+      detail_options = { query: {placeid: place_id, key: ENV['GOOGLE_PLACES_API_KEY']} }
       self.class.get("/details/json", detail_options)
     end
   end
@@ -38,6 +38,16 @@ helpers do
 
   def sample_place(place_ary)
     place_ary.delete_at(rand(place_ary.length))
+  end
+
+  def parse_details(detailed_response)
+    name = detailed_response["results"]["name"]
+    url = detailed_response["results"]["url"]
+    if name && url
+      {success: true, name: name, url: url}
+    else
+      {success: false}
+    end
   end
 
 #   if places.length < min_places do

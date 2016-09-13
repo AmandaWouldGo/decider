@@ -40,22 +40,29 @@ post '/inbound' do
         search_params = {
           location: locations[location_requested],
           radius: "500",
-          types: "restaurant",
+          query: "restaurant",
           opennow: true,
           key: ENV['GOOGLE_PLACES_API_KEY']
         }
 
-        ap search = GooglePlaces.new(search_params)
-        ap search_to_parse = search.nearby
-        ap results = parse_nearby(search_to_parse)
-        ap result = sample_place(results)
+        search = GooglePlaces.new(search_params)
+        search_to_parse = search.nearby
+        results = parse_nearby(search_to_parse)
+        result = sample_place(results)
 
-      else
+        detail_search = parse_details(search.details(result["place_id"]))
+        if detail_search[:success]
+          response_text = "Go here: #{detail_search[:name]} #{detail_search[:url]}"
+        else
+          result = sample_place(results)
+          ap detail_search = parse_details(search.details(result["place_id"]))
+          response_text = "Go here: #{detail_search[:name]} #{detail_search[:url]}"
+        end
 
       end
 
       message_back = Twilio::TwiML::Response.new do |r|
-        r.Message "#{response_text}"
+        r.Message response_text
       end
 
       message_back.to_xml
@@ -63,7 +70,7 @@ post '/inbound' do
   else
     user = User.create(phone_number: incoming[:sender])
     convo = WatsonConversations.new()
-    ap response = convo.start_convo(incoming[:message])
+    response = convo.start_convo(incoming[:message])
 
     user.update(last_context: response["context"])
       
