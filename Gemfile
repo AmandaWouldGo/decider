@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 # PostgreSQL driver
+gem 'dotenv'
 gem 'pg'
 
 # Sinatra driver
@@ -13,6 +14,10 @@ gem 'activerecord', '~>4.2.0'
 gem 'rake'
 
 gem 'shotgun'
+
+gem 'httparty'
+gem 'awesome_print'
+gem 'twilio-ruby', '~> 4.11.1'
 
 group :test do
   gem 'shoulda-matchers'

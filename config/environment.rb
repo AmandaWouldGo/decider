@@ -1,6 +1,9 @@
 # Set up gems listed in the Gemfile.
 # See: http://gembundler.com/bundler_setup.html
 #      http://stackoverflow.com/questions/7243486/why-do-you-need-require-bundler-setup
+require 'dotenv'
+Dotenv.load
+
 ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
 
 require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
@@ -19,6 +22,10 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 
 require 'erb'
+
+require 'httparty'
+
+require 'awesome_print'
 
 # Some helper constants for path-centric logic
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
